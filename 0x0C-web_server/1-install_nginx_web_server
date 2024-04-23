@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
-# Installs nginx server
-apt-get update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-echo "Hello World!" > /var/www/index.html
-service nginx start
+# configure new ubuntu machine 
+# nginx should be port 80
+# serve a page that would return a hello world world string
+
+sudo apt-get update -y -qq && \
+	sudo apt-get install nginx -y
+
+sudo service nginx start
+
+sudo utw allow 'Nginx HTTP'
+
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
+
+cp /var/www/html/index.nginx-debian.html /var/www/html/html.nginx-debian.html.bckp
+echo -e "Hello World !" | dd status=none of=/var/www/html/index.nginx-debian.html
+
+sudo service nginx restart
+
+echo -e "\ncompleted \n"
