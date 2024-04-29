@@ -29,7 +29,7 @@ if [ -d "/var/www" ]; then
         sudo chmod -R 755 /var/www
 else 
         sudo mkdir -p /var/www
-        sudo chmwn -R "$USER":"$USER" /var/www
+        sudo chown -R "$USER":"$USER" /var/www
         sudo chmod -R 755 /var/www
 fi
 
@@ -58,7 +58,7 @@ server_config=\
             server_name_;
             add_header X-served-By \$hostname;
             location / {
-                try-files \$uri \$uri/ =404;
+                try_files \$uri \$uri/ =404;
             }
             if (\$request_filename ~ redirect_me) {
                 rewirte ^ https://github.com/tewa92/ permanent;
