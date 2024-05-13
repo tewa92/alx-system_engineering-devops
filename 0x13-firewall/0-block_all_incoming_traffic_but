@@ -1,0 +1,38 @@
+# Documentation:
+# This script is used to block all incoming traffic but allow specified ports.
+# It uses the Uncomplicated Firewall (ufw) to configure the firewall rules.
+#
+# Instructions:
+# 1. Run the script with sudo privileges.
+# 2. Before each command is executed, a message will pop up for confirmation.
+# 3. After the script is executed, incoming traffic will be blocked except for the specified ports.
+
+echo "Updating...\n"
+sudo apt-get update
+
+echo "Installing ufw...\n"
+sudo apt-get install -y ufw
+
+# block all incoming traffic
+echo "Blocking all incoming traffic...\n"
+sudo ufw default deny incoming
+
+# allow all outgoing traffic
+echo "Allowing all outgoing traffic...\n"
+sudo ufw default allow outgoing
+
+# allow incoming traffic on port 22 (SSH)
+echo "Allowing incoming traffic on port 22 (SSH)...\n"
+sudo ufw allow 22/tcp
+
+# allow incoming traffic on port 443 (HTTPS SSL)
+echo "Allowing incoming traffic on port 443 (HTTPS SSL)...\n"
+sudo ufw allow 443/tcp
+
+# allow incoming traffic on port 80 (HTTP)
+echo "Allowing incoming traffic on port 80 (HTTP)...\n"
+sudo ufw allow 80/tcp
+
+# enable ufw
+echo "Enabling ufw...\n"
+sudo ufw enable
