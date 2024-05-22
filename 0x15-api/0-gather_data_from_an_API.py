@@ -6,28 +6,33 @@
 # completed tasks
 # This script uses the JSONPlaceholder API to get information about an
 # employee and their completed tasks
+
+import re
 import requests
 import sys
-# The user ID must be passed as a command line argument
-REST_API = "https://jsonplaceholder.typicode.com/"
-# This API is just a placeholder and doesn't actually contain any data
-# It's used in this script to demonstrate how to make a GET request
-# to a REST API to fetch data about an employee and their completed tasks
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: {} employee_id".format(sys.argv[0]))
-        sys.exit(1)
-    # Check for correct usage of command line argument
-    employee_id = sys.argv[1]
-    user = requests.get(REST_API + "users/{}".format(employee_id)).json()
-    todos = requests.get(REST_API + "todos?userId={}".format(employee_id))
-    .json()
-    # This is the part of the script that makes the GET request
-    # to the API to fetch the data about the user and their todos
-    completed_tasks = [task for task in todos if task.get("completed") is True]
-    # This is the list of all the completed tasks for the given user
-    print("Employee {} is done with tasks({}/{}):".format(
-        user.get("name"), len(completed_tasks), len(todos)))
-    # Print the list of completed tasks for the given user
-    for task in completed_tasks:
-        print("\t {}".format(task.get("title")))
+
+REST_API = "https://jsonplaceholder.typicode.com"
+
+if __name__ == '__main__':
+    # Check if the employee ID is provided as a command-line argument
+    if len(sys.argv) > 1:
+        if re.fullmatch(r'\d+', sys.argv[1]):
+            id = int(sys.argv[1])
+            # Retrieve the user's information
+            req = requests.get('{}/users/{}'.format(REST_API, id)).json()
+            # Retrieve the user's completed tasks
+            task_req = requests.get('{}/todos'.format(REST_API)).json()
+            emp_name = req.get('name')
+            tasks = list(filter(lambda x: x.get('userId') == id, task_req))
+            # Filter the completed tasks
+            completed_tasks = list(filter(lambda x: x.get('completed'), tasks))
+            print(
+                'Employee {} is done with tasks({}/{}):'.format(
+                    emp_name,
+                    len(completed_tasks),
+                    len(tasks)
+                )
+            )
+            if len(completed_tasks) > 0:
+                for task in completed_tasks:
+                    print('\t {}'.format(task.get('title')))
