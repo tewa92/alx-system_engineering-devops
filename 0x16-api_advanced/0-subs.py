@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
 This script queries subscribers on a given reddit subreddit.
 """
