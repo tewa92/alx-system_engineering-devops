@@ -10,3 +10,4 @@ if [ -n "$MASTER_PID" ]; then
 else
   echo "Gunicorn master process not found."
 fi
+
